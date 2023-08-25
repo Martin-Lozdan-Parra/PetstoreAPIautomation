@@ -33,7 +33,7 @@ public class PetRunnerTest {
         response
         .then()
         .statusCode(200)
-        .body("name", equalTo("DoggieModified"));
+        .body("name", equalTo("Rabbit 1"));
    }
    
    @Test(groups = "smoke")
