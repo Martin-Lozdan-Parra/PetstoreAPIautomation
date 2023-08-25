@@ -32,7 +32,7 @@ public class PetCategory
             
     }
 
-    public Response updatePetByID(Integer existentPetID, PetData petData){
+    public Response updatePetByID(String existentPetID, PetData petData){
         Response response =
         given()
         .contentType("application/x-www-form-urlencoded")
