@@ -21,65 +21,41 @@ public class StoreCategory
         return instance;
     }
 
-    public Response getUserByUserName(String userName) {
+    public Response placeOrder(OrderData orderData) {
         Response response = 
             given()
+            .contentType("application/x-www-form-urlencoded")
+            .formParam("id",orderData.ID)
+            .formParam("petId", orderData.petID)
+            .formParam("quantity", orderData.quantity)
+            .formParam("shipDate", orderData.shipDate)
+            .formParam("status", orderData.status)
+            .formParam("complete",orderData.complete)
             .when()
-            .get("/user/" + userName);
+            .post("/store/order");
             return response;
             
     }
 
-    public Response updateUserByUserName(String existentUserName, StoreData userData){
+    public Response getOrderByID(String orderID) {
+        Response response = 
+            given()
+            .when()
+            .get("/store/order/" + orderID);
+            return response;        
+    }
+
+    public Response deleteOrder(String orderID){
         Response response =
         given()
-        .contentType("application/x-www-form-urlencoded")
-        .formParam("userName",existentUserName)
-        .formParam("firstName", userData.firstName)
-        .formParam("lastName", userData.lastName)
-        .formParam("email", userData.email)
-        .formParam("password", userData.password)
-        .formParam("phone", userData.phone)
-        .formParam("userStatus",userData.userStatus)
         .when()
-        .put("/user/"+ existentUserName);
+        .delete("/store/order/" + orderID);
         return response;
     }
 
-    public Response createUser(StoreData userData){
-        Response response =
-        given()
-        .contentType("application/x-www-form-urlencoded")
-         .formParam("username", userData.username)
-        .formParam("firstName", userData.firstName)
-        .formParam("lastName", userData.lastName)
-        .formParam("email", userData.email)
-        .formParam("password", userData.password)
-        .formParam("phone", userData.phone)
-        .formParam("userStatus",userData.userStatus)
-        .when()
-        .post("/user");
-        return response;
-    }
+   
 
-    public Response deleteUser(String userName){
-        Response response =
-        given()
-        .when()
-        .delete("/user/" + userName);
-        return response;
-    }
-
-    public Response login(StoreData userData){
-        Response response =
-        given()
-        .contentType("application/x-www-form-urlencoded")
-         .formParam("username", userData.username)
-         .formParam("username", userData.password)
-        .when()
-        .get("/user/login");
-        return response;
-    }
+    
 
 
 

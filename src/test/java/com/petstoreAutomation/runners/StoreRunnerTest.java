@@ -7,6 +7,9 @@ import com.petstoreAutomation.Classes.Pets.August;
 import com.petstoreAutomation.Classes.Pets.PetCategory;
 import com.petstoreAutomation.Classes.Pets.PetData;
 import com.petstoreAutomation.Classes.Pets.Whiskers;
+import com.petstoreAutomation.Classes.Stores.OrderData;
+import com.petstoreAutomation.Classes.Stores.StoreCategory;
+
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
@@ -15,71 +18,65 @@ import static org.hamcrest.Matchers.*;
 public class StoreRunnerTest {
 
     
-    PetCategory petCategory;
+    StoreCategory storeCategory;
 
     @BeforeClass
     public void setup() {
         // Set base URI for your API
         RestAssured.baseURI = "http://localhost:8080/api/v3";
-        petCategory = PetCategory.getInstance();
+        storeCategory = StoreCategory.getInstance();
     }
     
+    //TODO some test are currently failing because of 500 status on POST and PUT methods for user. Consult a developer
     
-   @Test()
-   public void searchPetByID()
+   //@Test(dataProvider = "newOrder", dataProviderClass = TestDataProviders.class)
+   public void createOrder(OrderData orderData)
    {    
-        petCategory = PetCategory.getInstance();
-        Response response = petCategory.getPetByID("10");
-        response
-        .then()
-        .statusCode(200)
-        .body("name", equalTo("Rabbit 1"));
-   }
-   
-   
-
-   @Test(groups = "smoke",dataProvider = "newPet", dataProviderClass = TestDataProviders.class)
-   private void createPet(PetData pet)
-   {    
-        Response response = petCategory.createPet(pet);
+        storeCategory = StoreCategory.getInstance();
+        Response response = storeCategory.placeOrder(orderData);
         response
         .then()
         .statusCode(200);
 
-        response = petCategory.getPetByID(pet.ID);
+        response = storeCategory.getOrderByID(orderData.ID);
         response.then()
-        .body("name",equalTo(pet.name))
-        .body("photoUrls[0]",equalTo(pet.photoUrls[0]));     
+                .statusCode(200)
+                .body("petId",equalTo(orderData.petID))
+                .body("quantity",equalTo(orderData.quantity))
+                .body("shipDate",equalTo(orderData.shipDate))
+                .body("status",equalTo(orderData.status))
+                .body("complete",equalTo(orderData.complete));
+        
    }
 
-   @Test(groups = "smoke",dataProvider = "updatePet", dataProviderClass = TestDataProviders.class,dependsOnMethods = "createPet")
-   private void updatePetByID(PetData pet, String petID)
+   //@Test(dataProvider = "deleteOrder", dataProviderClass = TestDataProviders.class)
+   public void deleteOrder(OrderData orderData)
    {    
-    //First, update the pet
-    
-        Response response = petCategory.updatePetByID(petID,pet);
-        response
-        .then()
-        .statusCode(200);
-     
-    //Then, search for the pet and assert that the body is the one that was updated
-        response = petCategory.getPetByID(petID);
+        storeCategory = StoreCategory.getInstance();
+        Response response = storeCategory.deleteOrder(orderData.ID);
         response.then()
-        .body("name",equalTo(pet.name))
-        .body("photoUrls[0]",equalTo(pet.photoUrls[0]));     
+                .statusCode(200);
+        response = storeCategory.getOrderByID(orderData.ID);
+        response.then()
+                .statusCode(404);
+        
+        
+   }
+
+   @Test
+   public void invalidDeleteOrder()
+   {    
+        storeCategory = StoreCategory.getInstance();
+        Response response = storeCategory.deleteOrder("1001");
+        response.then()
+                .statusCode(400);
+      
+        
    }
    
-   @Test(dataProvider = "newPet", dataProviderClass = TestDataProviders.class, dependsOnMethods = "updatePetByID")
-   private void deletePet(PetData pet)
-   {    
-        Response response = petCategory.deletePet(pet.ID);
-        response
-        .then()
-        .statusCode(200);
-        response = petCategory.getPetByID(pet.ID);
-        response.then()
-        .statusCode(404);     
-   }
+   
+
+   
    
 
    

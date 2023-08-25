@@ -4,6 +4,7 @@ import org.testng.annotations.DataProvider;
 import com.petstoreAutomation.Classes.Pets.August;
 import com.petstoreAutomation.Classes.Pets.Rodolfo;
 import com.petstoreAutomation.Classes.Pets.Whiskers;
+import com.petstoreAutomation.Classes.Stores.newOrder;
 import com.petstoreAutomation.Classes.Users.Mary;
 import com.petstoreAutomation.Classes.Users.User1;
 import com.petstoreAutomation.Classes.Users.unexistentUser;
@@ -54,6 +55,20 @@ public class TestDataProviders {
         return new Object[][] {
             {new Mary(), "user1"},
             
+        };
+    }
+
+    @DataProvider(name = "newOrder")
+    public static Object[][] newOrderDataProvider() {
+        return new Object[][] {
+            {new newOrder()},
+        };
+    }
+
+    @DataProvider(name = "deleteOrder")
+    public static Object[][] deleteOrderDataProvider() {
+        return new Object[][] {
+            {new newOrder()},
         };
     }
 }
