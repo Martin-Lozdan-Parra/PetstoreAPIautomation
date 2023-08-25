@@ -1,11 +1,9 @@
-package com.petstoreAutomation.Classes;
+package com.petstoreAutomation.Classes.Pets;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import com.petstoreAutomation.Classes.Pets.Whiskers;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
