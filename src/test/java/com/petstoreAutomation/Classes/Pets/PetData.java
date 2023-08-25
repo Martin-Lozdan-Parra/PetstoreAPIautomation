@@ -1,4 +1,4 @@
-package com.petstoreAutomation.Classes;
+package com.petstoreAutomation.Classes.Pets;
 import java.util.Map;
 
 public class PetData {
