@@ -1,14 +1,21 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="MyTestSuite">
-    <test name="UserTests">
+    <listeners>
+        <listener class-name="../ExtentTestListener"/>
+    </listeners>
+    <test name="UserTests" preserve-order="true">
         <groups>
             <run>
+                <include name="createPet"/>
+                <include name="searchPetByID"/>
+                <include name="updatePetByID"/>
+                <include name="deletePet"/>
                 <include name="smoke" />
                 <include name="regression" />
             </run>
         </groups>
         <classes>
-            <class name="BaseTest"/>
+            <class name="PetTestsRunner"/>
         </classes>
     </test>
 </suite>
