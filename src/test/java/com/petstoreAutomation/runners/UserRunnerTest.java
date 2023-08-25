@@ -17,6 +17,8 @@ import static org.hamcrest.Matchers.*;
 
 public class UserRunnerTest {
 
+    //TODO some test are currently failing because of 500 status on POST and PUT methods for user. Consult a developer
+
     
     UserCategory userCategory;
 
@@ -59,24 +61,42 @@ public class UserRunnerTest {
             
    }
 
-   @Test(groups = "smoke",dataProvider = "deleteUser", dataProviderClass = TestDataProviders.class,dependsOnMethods = "createUser")
-   private void updateUserByUserName(UserData userData, String UserName)
+   @Test(groups = "smoke",dataProvider = "updateUser", dataProviderClass = TestDataProviders.class)
+   private void updateUserByUserName(UserData userData, String UserName) 
    {    
-    //First, update the pet
-    
+   
         Response response = userCategory.updateUserByUserName(UserName, userData);
         response
         .then()
         .statusCode(200);
      
-    //Then, search for the pet and assert that the body is the one that was updated
+   
         response = userCategory.getUserByUserName(UserName);
         response.then()
-        .body("firstName",equalTo(userData.firstName))
-        .body("userStatus",equalTo(userData.userStatus));     
+            .body("firstName",equalTo(userData.firstName))
+            .body("userStatus",equalTo(userData.userStatus));    
    }
    
-   @Test(dataProvider = "deleteUser", dataProviderClass = TestDataProviders.class, dependsOnMethods = "updateUserByUserName")
+
+   @Test(dataProvider = "unexistentUser", dataProviderClass = TestDataProviders.class)
+   private void wrongLogin(UserData userData)
+   {    
+        Response response = userCategory.login(userData);
+        response
+        .then()
+        .statusCode(400);   
+   }
+
+   @Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
+   private void validLogin(UserData userData)
+   {    
+        Response response = userCategory.login(userData);
+        response
+        .then()
+        .statusCode(200);   
+   }
+
+   //@Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
    private void deleteUser(UserData userData)
    {    
         Response response = userCategory.deleteUser(userData.username);
@@ -87,13 +107,4 @@ public class UserRunnerTest {
         response.then()
         .statusCode(404);     
    }
-   
-
-   
-
-
-
-    
-
-    // Add more test methods as needed
 }

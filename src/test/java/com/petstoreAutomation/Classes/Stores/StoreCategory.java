@@ -1,4 +1,4 @@
-package com.petstoreAutomation.Classes.Users;
+package com.petstoreAutomation.Classes.Stores;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -9,14 +9,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 
-public class UserCategory 
+public class StoreCategory 
 {  
 
-    public static UserCategory instance;
+    public static StoreCategory instance;
 
-    public static synchronized UserCategory getInstance() {
+    public static synchronized StoreCategory getInstance() {
         if (instance == null) {
-            instance = new UserCategory();
+            instance = new StoreCategory();
         }
         return instance;
     }
@@ -30,7 +30,7 @@ public class UserCategory
             
     }
 
-    public Response updateUserByUserName(String existentUserName, UserData userData){
+    public Response updateUserByUserName(String existentUserName, StoreData userData){
         Response response =
         given()
         .contentType("application/x-www-form-urlencoded")
@@ -46,7 +46,7 @@ public class UserCategory
         return response;
     }
 
-    public Response createUser(UserData userData){
+    public Response createUser(StoreData userData){
         Response response =
         given()
         .contentType("application/x-www-form-urlencoded")
@@ -70,7 +70,7 @@ public class UserCategory
         return response;
     }
 
-    public Response login(UserData userData){
+    public Response login(StoreData userData){
         Response response =
         given()
         .contentType("application/x-www-form-urlencoded")

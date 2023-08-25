@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="UserTestSuite">
+<suite name="PetTestSuite">
     <test name="UserTests" preserve-order="true">
         <classes>
-            <class name="com.petstoreAutomation.runners.UserRunnerTest"/>
+            <class name="com.petstoreAutomation.runners.PetRunnerTest"/>
         </classes>
     </test>
 </suite>
