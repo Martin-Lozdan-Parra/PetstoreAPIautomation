@@ -1,92 +1,71 @@
 package com.petstoreAutomation.Classes.Users;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import com.google.gson.JsonObject;
-import com.petstoreAutomation.Classes.Pets.PetData;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
+import io.restassured.response.Response;
 
-public class UserCategory 
-{  
+public class UserCategory {
 
-    public static UserCategory instance;
+  public static UserCategory instance;
 
-    public static synchronized UserCategory getInstance() {
-        if (instance == null) {
-            instance = new UserCategory();
-        }
-        return instance;
+  public static synchronized UserCategory getInstance() {
+    if (instance == null) {
+      instance = new UserCategory();
     }
+    return instance;
+  }
 
-    public Response getUserByUserName(String userName) {
-        Response response = 
-            given()
+  public Response getUserByUserName(String userName) {
+    Response response = given().when().get("/user/" + userName);
+    return response;
+  }
+
+  // TODO provide a good way to convert from json to string
+
+  public Response updateUserByUserName(String existentUserName, UserData userData) {
+
+    String jsonFilePath = "path/to/request.json";
+    // String jsonBody = JsonObject.readfromFile(jsonFilePath);
+    Response response =
+        given()
+            .contentType("application/json")
+            // .body(jsonBody)
             .when()
-            .get("/user/" + userName);
-            return response;
-            
-    }
+            .put("/user/" + existentUserName);
+    return response;
+  }
 
-    // TODO provide a good way to convert from json to string
-
-    public Response updateUserByUserName(String existentUserName, UserData userData){
-
-        String jsonFilePath = "path/to/request.json";
-        //String jsonBody = JsonObject.readfromFile(jsonFilePath);
-        Response response =
+  public Response createUser(UserData userData) {
+    Response response =
         given()
-        .contentType("application/json")
-       // .body(jsonBody)
-        .when()
-        .put("/user/"+ existentUserName);
-        return response;
-        
-    }
+            .contentType("application/x-www-form-urlencoded")
+            .formParam("id", userData.ID)
+            .formParam("username", userData.username)
+            .formParam("firstName", userData.firstName)
+            .formParam("lastName", userData.lastName)
+            .formParam("mail", userData.email)
+            .formParam("password", userData.password)
+            .formParam("phone", userData.phone)
+            .formParam("userStatus", userData.userStatus)
+            .when()
+            .post("/user");
+    return response;
+  }
 
-    public Response createUser(UserData userData){
-        Response response =
+  public Response deleteUser(String userName) {
+    Response response = given().when().delete("/user/" + userName);
+    return response;
+  }
+
+  public Response login(UserData userData) {
+    Response response =
         given()
-        .contentType("application/x-www-form-urlencoded")
-         .formParam("id", userData.ID)   
-         .formParam("username", userData.username)
-        .formParam("firstName", userData.firstName)
-        .formParam("lastName", userData.lastName)
-        .formParam("mail", userData.email)
-        .formParam("password", userData.password)
-        .formParam("phone", userData.phone)
-        .formParam("userStatus",userData.userStatus)
-        .when()
-        .post("/user");
-        return response;
-    }
-
-    public Response deleteUser(String userName){
-        Response response =
-        given()
-        .when()
-        .delete("/user/" + userName);
-        return response;
-    }
-
-    public Response login(UserData userData){
-        Response response =
-        given()
-        .contentType("application/x-www-form-urlencoded")
-         .formParam("username", userData.username)
-         .formParam("username", userData.password)
-        .when()
-        .get("/user/login");
-        return response;
-    }
-
-
-
-    
+            .contentType("application/x-www-form-urlencoded")
+            .formParam("username", userData.username)
+            .formParam("username", userData.password)
+            .when()
+            .get("/user/login");
+    return response;
+  }
 }
