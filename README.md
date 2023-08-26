@@ -31,7 +31,7 @@ If you want to run only one test, you may use
 mvn test -Dtest=<Name of the runner that contains the test>#<Name of the test>
 example: mvn test -Dtest=StoreRunnerTest#createOrder
 ```
-to find the test method name, you can go to the runners class and look at the methods that are below the @Test tag, those are the names you want. [More Details](HowToCreateATest.md)
+to find the test method name, you can go to a [runner class](src/test/java/com/petstoreAutomation/runners/PetRunnerTest.java), and look at the methods that are below the @Test tag, those are the names you want. [More Details](HowToCreateATest.md)
 
 ## Reports
 
