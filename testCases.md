@@ -3,6 +3,7 @@ UserCases
     Get User by username
     Create An User
     Create An existing User
+    Create An User with only same username and password
     User Log in
     User Log Out
     Update User -------- to be fixed
@@ -29,3 +30,9 @@ Store
     Create Invalid Order
     Delete Order
     Delete invalid Order
+
+
+
+## About some failing cases
+
+Of the 20 cases in the repository, 10 are failing. 4 of them are tests that either try to delete an unexisting object which i interpret wouldn't be possible, or overwrite an object creating one with the same ID. This would be a good discussion point with the team.

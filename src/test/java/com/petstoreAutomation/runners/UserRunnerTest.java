@@ -51,7 +51,16 @@ public class UserRunnerTest {
             
    }
 
-   @Test(groups = "smoke",dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
+   @Test(dataProvider = "newUser2", dataProviderClass = TestDataProviders.class)
+   private void createUserWithSameUserNameAndPass(UserData userData)
+   {    
+        Response response = userCategory.createUser(userData);
+        response
+        .then()
+        .statusCode(403); //   
+   }
+
+   @Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
    private void createExistentUser(UserData userData)
    {    
         Response response = userCategory.createUser(userData);
@@ -100,7 +109,7 @@ public class UserRunnerTest {
         .statusCode(200);   
    }
 
-   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class, dependsOnMethods = "createUser")
+   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
    private void deleteUser(UserData userData)
    {    
         Response response = userCategory.deleteUser(userData.username);
@@ -112,7 +121,7 @@ public class UserRunnerTest {
         .statusCode(404);     
    }
 
-   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class, dependsOnMethods = "deleteUser")
+   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
    private void deleteUnexistentUser(UserData userData)
    {    
         Response response = userCategory.deleteUser(userData.username);

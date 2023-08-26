@@ -72,6 +72,14 @@ public class TestDataProviders {
         };
     }
 
+    @DataProvider(name = "newUser2")
+    public static Object[][] newUser2DataProvider() {
+        return new Object[][] {
+            {new Mary2()},
+            
+        };
+    }
+
     @DataProvider(name = "existentUser")
     public static Object[][] existenUserDataProvider() {
         return new Object[][] {

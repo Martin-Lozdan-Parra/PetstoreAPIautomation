@@ -62,7 +62,7 @@ public class StoreRunnerTest {
         
    }
 
-   @Test(dataProvider = "deleteOrder", dataProviderClass = TestDataProviders.class, dependsOnMethods = "createOrder")
+   @Test(dataProvider = "deleteOrder", dataProviderClass = TestDataProviders.class)
    public void deleteOrder(OrderData orderData)
    {    
         storeCategory = StoreCategory.getInstance();
