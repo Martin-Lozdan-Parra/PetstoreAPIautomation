@@ -30,6 +30,7 @@ public class UserRunnerTest {
     response.then().statusCode(200);
 
     response = userCategory.getUserByUserName(userData.username);
+
     response
         .then()
         .body("firstName", equalTo(userData.firstName))
@@ -43,12 +44,14 @@ public class UserRunnerTest {
   @Test(dataProvider = "newUser2", dataProviderClass = TestDataProviders.class)
   private void createUserWithSameUserNameAndPass(UserData userData) {
     Response response = userCategory.createUser(userData);
+
     response.then().statusCode(403); //
   }
 
   @Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
   private void createExistentUser(UserData userData) {
     Response response = userCategory.createUser(userData);
+
     response.then().statusCode(403);
   }
 
@@ -73,17 +76,20 @@ public class UserRunnerTest {
   @Test(dataProvider = "unexistentUser", dataProviderClass = TestDataProviders.class)
   private void wrongLogin(UserData userData) {
     Response response = userCategory.login(userData);
+
     response.then().statusCode(400);
   }
 
   @Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
   private void validLogin(UserData userData) {
     Response response = userCategory.login(userData);
+    
     response.then().statusCode(200);
   }
 
   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
   private void deleteUser(UserData userData) {
+
     Response response = userCategory.deleteUser(userData.username);
     response.then().statusCode(200);
     response = userCategory.getUserByUserName(userData.username);
@@ -92,6 +98,7 @@ public class UserRunnerTest {
 
   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
   private void deleteUnexistentUser(UserData userData) {
+     
     Response response = userCategory.deleteUser(userData.username);
     response.then().statusCode(404);
   }

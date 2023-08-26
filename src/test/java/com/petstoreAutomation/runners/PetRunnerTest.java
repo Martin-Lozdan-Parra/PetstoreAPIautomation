@@ -53,35 +53,24 @@ public class PetRunnerTest {
     response.then().statusCode(403);
   }
 
-  @Test(
-      dataProvider = "updatePet",
-      dataProviderClass = TestDataProviders.class,
-      dependsOnMethods = "createPet")
+  @Test(dataProvider = "updatePet",dataProviderClass = TestDataProviders.class,dependsOnMethods = "createPet")
   private void updatePetByID(PetData pet, String petID) {
-    // First, update the pet
-
+  
     Response response = petCategory.updatePetByID(petID, pet);
     response.then().statusCode(200);
-
-    // Then, search for the pet and assert that the body is the one that was updated
     response = petCategory.getPetByID(petID);
     response
         .then()
         .body("name", equalTo(pet.name))
         .body("photoUrls[0]", equalTo(pet.photoUrls[0]))
         .body("status", equalTo(pet.status));
-
     int categoryId = response.path("category.id");
     String categoryName = response.path("category.name");
-
     assert categoryId == pet.categoryID;
     assert categoryName.equals(pet.categoryName);
   }
 
-  @Test(
-      dataProvider = "newPet",
-      dataProviderClass = TestDataProviders.class,
-      dependsOnMethods = "updatePetByID")
+  @Test(dataProvider = "newPet",dataProviderClass = TestDataProviders.class,dependsOnMethods = "updatePetByID")
   private void deletePet(PetData pet) {
     Response response = petCategory.deletePet(pet.ID);
     response.then().statusCode(200);
@@ -89,10 +78,7 @@ public class PetRunnerTest {
     response.then().statusCode(404);
   }
 
-  @Test(
-      dataProvider = "UnExistentPet",
-      dataProviderClass = TestDataProviders.class,
-      dependsOnMethods = "updatePetByID")
+  @Test(dataProvider = "UnExistentPet",dataProviderClass = TestDataProviders.class,dependsOnMethods = "updatePetByID")
   private void deleteUnexistentPet(PetData pet) {
     Response response = petCategory.deletePet(pet.ID);
     response.then().statusCode(404);

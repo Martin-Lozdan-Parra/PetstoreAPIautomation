@@ -29,6 +29,7 @@ public class StoreRunnerTest {
     response.then().statusCode(200);
 
     response = storeCategory.getOrderByID(orderData.ID.toString());
+
     response
         .then()
         .statusCode(200)
@@ -43,6 +44,7 @@ public class StoreRunnerTest {
   public void createInvalidOrder(OrderData orderData) {
     storeCategory = StoreCategory.getInstance();
     Response response = storeCategory.placeOrder(orderData);
+
     response.then().statusCode(500);
   }
 
@@ -50,6 +52,7 @@ public class StoreRunnerTest {
   public void deleteOrder(OrderData orderData) {
     storeCategory = StoreCategory.getInstance();
     Response response = storeCategory.deleteOrder(orderData.ID.toString());
+
     response.then().statusCode(200);
     response = storeCategory.getOrderByID(orderData.ID.toString());
     response.then().statusCode(404);
@@ -59,6 +62,7 @@ public class StoreRunnerTest {
   public void invalidDeleteOrder() {
     storeCategory = StoreCategory.getInstance();
     Response response = storeCategory.deleteOrder("1001");
+    
     response.then().statusCode(400);
   }
 
