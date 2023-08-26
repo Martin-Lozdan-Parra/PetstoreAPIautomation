@@ -15,14 +15,13 @@ The [swagger-petstore API](https://github.com/swagger-api/swagger-petstore) runn
 
 ## How to run Tests
 
-
-In order to execute all the 3 suites use 
+There are 3 [xml](UserTestSuite.xml), each one is a test suite. In order to execute all the 3 suites use 
 ```bash
 mvn test
 ```
 this will execute all the tests
 
-If you want to run all the tests of a category, you may use
+If you want to run all the tests of a store category (Pets, Users or Store), you may use
 ```bash
 mvn test -DsuiteXmlFile=<Name of the xml file here>
 ```
@@ -32,7 +31,7 @@ If you want to run only one test, you may use
 mvn test -Dtest=<Name of the runner that contains the test>#<Name of the test>
 example: mvn test -Dtest=StoreRunnerTest#createOrder
 ```
-to find the test method name, you can go to the runners class and look at the methods that are below the @Test tag, those are the names you want.
+to find the test method name, you can go to the runners class and look at the methods that are below the @Test tag, those are the names you want. [More Details](HowToCreateATest.md)
 
 ## Reports
 
