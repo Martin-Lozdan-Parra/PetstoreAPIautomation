@@ -4,19 +4,19 @@ import java.util.Map;
 
 import com.petstoreAutomation.Classes.Pets.PetData;
 
-public class deleteUser extends UserData
+public class Mary2 extends UserData
 {
 
     
 
-    public deleteUser(){
+    public Mary2(){
 
 
      
         ID = 11;
         username = "mary87";
-        firstName = "Mary";
-        lastName = "Adams";
+        firstName = "Mary2";
+        lastName = "Adams2";
         email = "mary87@mail";
         password= "maryPassword";
         phone = "9447332232";

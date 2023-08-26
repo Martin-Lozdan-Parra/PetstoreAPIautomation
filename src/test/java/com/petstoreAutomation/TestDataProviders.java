@@ -1,14 +1,15 @@
 package com.petstoreAutomation;
 import org.testng.annotations.DataProvider;
 
-import com.petstoreAutomation.Classes.Pets.August;
-import com.petstoreAutomation.Classes.Pets.Rodolfo;
-import com.petstoreAutomation.Classes.Pets.Whiskers;
-import com.petstoreAutomation.Classes.Users.Mary;
-import com.petstoreAutomation.Classes.Users.User1;
-import com.petstoreAutomation.Classes.Users.unexistentUser;
+import com.petstoreAutomation.Classes.Pets.*;
+import com.petstoreAutomation.Classes.Stores.*;
+import com.petstoreAutomation.Classes.Users.*;
+
 
 public class TestDataProviders {
+
+
+    //------------ PETS -----------//
 
     @DataProvider(name = "newPet")
     public static Object[][] newPetDataProvider() {
@@ -25,10 +26,56 @@ public class TestDataProviders {
         };
     }
 
+    @DataProvider(name = "Pet 1")
+    public static Object[][] Pet1PetDataProvider() {
+        return new Object[][] {
+            {new Pet1()},
+        };
+    }
+
+
+    @DataProvider(name = "Pet 3")
+    public static Object[][] Pet3PetDataProvider() {
+        return new Object[][] {
+            {new Pet3()},
+        };
+    }
+
+    @DataProvider(name = "UnExistentPet")
+    public static Object[][] UnExistentPetDataProvider() {
+        return new Object[][] {
+            {new UnexistentPet()},
+        };
+    }
+
+    @DataProvider(name = "WrongFormatPet")
+    public static Object[][] WrongFormatPetDataProvider() {
+        return new Object[][] {
+            {new WrongFormatPet()},
+        };
+    }
+
+    @DataProvider(name = "DeletePet")
+    public static Object[][] DeletePetDataProvider() {
+        return new Object[][] {
+            {new Pet2()},
+        };
+    }
+
+    //------------users---------------//
+
     @DataProvider(name = "newUser")
     public static Object[][] newUserDataProvider() {
         return new Object[][] {
             {new Mary()},
+            
+        };
+    }
+
+    @DataProvider(name = "newUser2")
+    public static Object[][] newUser2DataProvider() {
+        return new Object[][] {
+            {new Mary2()},
             
         };
     }
@@ -52,8 +99,31 @@ public class TestDataProviders {
     @DataProvider(name = "updateUser")
     public static Object[][] updateUserDataProvider() {
         return new Object[][] {
-            {new Mary(), "user1"},
+            {new updatedUser(), "user1"},
             
+        };
+    }
+
+    //---------------ORDERS------------//
+
+    @DataProvider(name = "newOrder")
+    public static Object[][] newOrderDataProvider() {
+        return new Object[][] {
+            {new newOrder()},
+        };
+    }
+
+    @DataProvider(name = "deleteOrder")
+    public static Object[][] deleteOrderDataProvider() {
+        return new Object[][] {
+            {new newOrder()},
+        };
+    }
+
+    @DataProvider(name = "newInvalidOrder")
+    public static Object[][] newInvalidOrderDataProvider() {
+        return new Object[][] {
+            {new newInvalidOrder()},
         };
     }
 }

@@ -9,6 +9,7 @@ import com.petstoreAutomation.Classes.Pets.PetData;
 import com.petstoreAutomation.Classes.Pets.Whiskers;
 import com.petstoreAutomation.Classes.Users.UserCategory;
 import com.petstoreAutomation.Classes.Users.UserData;
+import com.petstoreAutomation.Classes.Users.deleteUser;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -24,25 +25,14 @@ public class UserRunnerTest {
 
     @BeforeClass
     public void setup() {
-        // Set base URI for your API
         RestAssured.baseURI = "http://localhost:8080/api/v3";
         userCategory = UserCategory.getInstance();
     }
     
-    
-   @Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
-   public void searchUserByID(UserData userData)
-   {   
-        Response response = userCategory.getUserByUserName(userData.username);
-        response
-        .then()
-        .statusCode(200)
-        .body("firstName", equalTo(userData.firstName));
-   }
    
    
 
-   @Test(groups = "smoke",dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
+   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
    private void createUser(UserData userData)
    {    
         Response response = userCategory.createUser(userData);
@@ -61,9 +51,28 @@ public class UserRunnerTest {
             
    }
 
-   @Test(groups = "smoke",dataProvider = "updateUser", dataProviderClass = TestDataProviders.class)
-   private void updateUserByUserName(UserData userData, String UserName) 
+   @Test(dataProvider = "newUser2", dataProviderClass = TestDataProviders.class)
+   private void createUserWithSameUserNameAndPass(UserData userData)
    {    
+        Response response = userCategory.createUser(userData);
+        response
+        .then()
+        .statusCode(403); //   
+   }
+
+   @Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
+   private void createExistentUser(UserData userData)
+   {    
+        Response response = userCategory.createUser(userData);
+        response
+        .then()
+        .statusCode(403);
+            
+   }
+
+   //@Test(groups = "smoke",dataProvider = "updateUser", dataProviderClass = TestDataProviders.class, dependsOnMethods = "createUser")
+   private void updateUserByUserName(UserData userData, String UserName) 
+   {     
    
         Response response = userCategory.updateUserByUserName(UserName, userData);
         response
@@ -74,7 +83,11 @@ public class UserRunnerTest {
         response = userCategory.getUserByUserName(UserName);
         response.then()
             .body("firstName",equalTo(userData.firstName))
-            .body("userStatus",equalTo(userData.userStatus));    
+            .body("lastName",equalTo(userData.lastName))
+            .body("mail",equalTo(userData.email))
+            .body("password",equalTo(userData.password))
+            .body("phone",equalTo(userData.phone))
+            .body("userStatus",equalTo(userData.userStatus));  
    }
    
 
@@ -96,7 +109,7 @@ public class UserRunnerTest {
         .statusCode(200);   
    }
 
-   //@Test(dataProvider = "existentUser", dataProviderClass = TestDataProviders.class)
+   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
    private void deleteUser(UserData userData)
    {    
         Response response = userCategory.deleteUser(userData.username);
@@ -106,5 +119,15 @@ public class UserRunnerTest {
         response = userCategory.getUserByUserName(userData.username);
         response.then()
         .statusCode(404);     
+   }
+
+   @Test(dataProvider = "newUser", dataProviderClass = TestDataProviders.class)
+   private void deleteUnexistentUser(UserData userData)
+   {    
+        Response response = userCategory.deleteUser(userData.username);
+        response
+        .then()
+        .statusCode(404);
+            
    }
 }
