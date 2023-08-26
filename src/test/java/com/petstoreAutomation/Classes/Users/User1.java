@@ -11,6 +11,7 @@ public class User1 extends UserData
 
     public User1(){
 
+        ID = 1;
         username = "user1";
         firstName = "first name 1";
         lastName = "last name 1";

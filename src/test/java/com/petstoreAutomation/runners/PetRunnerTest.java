@@ -25,20 +25,9 @@ public class PetRunnerTest {
     }
     
     
-   @Test()
-   public void searchPetByID()
-   {    
-        petCategory = PetCategory.getInstance();
-        Response response = petCategory.getPetByID("10");
-        response
-        .then()
-        .statusCode(200)
-        .body("name", equalTo("Rabbit 1"));
-   }
-   
    
 
-   @Test(groups = "smoke",dataProvider = "newPet", dataProviderClass = TestDataProviders.class)
+   @Test(dataProvider = "newPet", dataProviderClass = TestDataProviders.class)
    private void createPet(PetData pet)
    {    
         Response response = petCategory.createPet(pet);
@@ -49,10 +38,36 @@ public class PetRunnerTest {
         response = petCategory.getPetByID(pet.ID);
         response.then()
         .body("name",equalTo(pet.name))
-        .body("photoUrls[0]",equalTo(pet.photoUrls[0]));     
+        .body("photoUrls[0]",equalTo(pet.photoUrls[0]))
+        .body("status",equalTo(pet.status)); 
+
+        int categoryId = response.path("category.id");
+        String categoryName = response.path("category.name");
+
+        assert categoryId == pet.categoryID;
+        assert categoryName.equals(pet.categoryName);
+          
    }
 
-   @Test(groups = "smoke",dataProvider = "updatePet", dataProviderClass = TestDataProviders.class,dependsOnMethods = "createPet")
+   @Test(dataProvider = "WrongFormatPet", dataProviderClass = TestDataProviders.class)
+   private void createWrongFormatPet(PetData pet)
+   {    
+        Response response = petCategory.createPet(pet);
+        response
+        .then()
+        .statusCode(500);
+   }
+
+   @Test(dataProvider = "Pet 1", dataProviderClass = TestDataProviders.class)
+   private void createExistentPet(PetData pet)
+   {    
+        Response response = petCategory.createPet(pet);
+        response
+        .then()
+        .statusCode(403);
+   }
+
+   @Test(dataProvider = "updatePet", dataProviderClass = TestDataProviders.class, dependsOnMethods = "createPet")
    private void updatePetByID(PetData pet, String petID)
    {    
     //First, update the pet
@@ -66,8 +81,16 @@ public class PetRunnerTest {
         response = petCategory.getPetByID(petID);
         response.then()
         .body("name",equalTo(pet.name))
-        .body("photoUrls[0]",equalTo(pet.photoUrls[0]));     
+        .body("photoUrls[0]",equalTo(pet.photoUrls[0]))
+        .body("status",equalTo(pet.status)); 
+
+        int categoryId = response.path("category.id");
+        String categoryName = response.path("category.name");
+
+        assert categoryId == pet.categoryID;
+        assert categoryName.equals(pet.categoryName);     
    }
+
    
    @Test(dataProvider = "newPet", dataProviderClass = TestDataProviders.class, dependsOnMethods = "updatePetByID")
    private void deletePet(PetData pet)
@@ -79,6 +102,27 @@ public class PetRunnerTest {
         response = petCategory.getPetByID(pet.ID);
         response.then()
         .statusCode(404);     
+   }
+
+   @Test(dataProvider = "UnExistentPet", dataProviderClass = TestDataProviders.class, dependsOnMethods = "updatePetByID")
+   private void deleteUnexistentPet(PetData pet)
+   {    
+        Response response = petCategory.deletePet(pet.ID);
+        response
+        .then()
+        .statusCode(404);
+           
+   }
+
+   @Test(dataProvider = "UnExistentPet", dataProviderClass = TestDataProviders.class)
+   private void updateUnExistent(PetData pet)
+   {    
+    //First, update the pet
+    
+        Response response = petCategory.updatePetByID(pet.ID,pet);
+        response
+        .then()
+        .statusCode(404);    
    }
    
 

@@ -4,9 +4,9 @@ import java.util.Map;
 public class OrderData {
 
     
-    public String ID;
-    public String petID;
-    public String quantity;
+    public Integer ID;
+    public Integer petID;
+    public Integer quantity;
     public String shipDate;
     public String status;
     public Boolean complete;

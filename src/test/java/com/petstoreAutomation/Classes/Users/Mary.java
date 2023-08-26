@@ -13,7 +13,7 @@ public class Mary extends UserData
 
 
      
-        ID = "11";
+        ID = 11;
         username = "mary87";
         firstName = "Mary";
         lastName = "Adams";

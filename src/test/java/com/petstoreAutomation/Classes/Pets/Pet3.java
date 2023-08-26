@@ -2,16 +2,19 @@ package com.petstoreAutomation.Classes.Pets;
 
 import java.util.Map;
 
-public class Whiskers extends PetData 
+public class Pet3 extends PetData 
 {
 
+    
 
-    public Whiskers(){
-        String[] photos = {"WhiskersPhoto"};
-        ID = "11";
-        name = "Whiskers";
+    public Pet3(){
+        
+        ID = "3";
+        name = "Cat 3";
         category = "{\"id\": 2,\n\"name\": \"Cats\"}";
+        String[] photos = {"url1","url2"};
         photoUrls = photos;
+        status = "pending";
         categoryID = 2;
         categoryName = "Cats";
 

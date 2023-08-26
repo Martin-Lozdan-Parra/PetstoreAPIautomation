@@ -4,9 +4,13 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.google.gson.JsonObject;
 import com.petstoreAutomation.Classes.Pets.PetData;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class UserCategory 
@@ -30,30 +34,31 @@ public class UserCategory
             
     }
 
+    // TODO provide a good way to convert from json to string
+
     public Response updateUserByUserName(String existentUserName, UserData userData){
+
+        String jsonFilePath = "path/to/request.json";
+        //String jsonBody = JsonObject.readfromFile(jsonFilePath);
         Response response =
         given()
-        .contentType("application/x-www-form-urlencoded")
-        .formParam("userName",existentUserName)
-        .formParam("firstName", userData.firstName)
-        .formParam("lastName", userData.lastName)
-        .formParam("email", userData.email)
-        .formParam("password", userData.password)
-        .formParam("phone", userData.phone)
-        .formParam("userStatus",userData.userStatus)
+        .contentType("application/json")
+       // .body(jsonBody)
         .when()
         .put("/user/"+ existentUserName);
         return response;
+        
     }
 
     public Response createUser(UserData userData){
         Response response =
         given()
         .contentType("application/x-www-form-urlencoded")
+         .formParam("id", userData.ID)   
          .formParam("username", userData.username)
         .formParam("firstName", userData.firstName)
         .formParam("lastName", userData.lastName)
-        .formParam("email", userData.email)
+        .formParam("mail", userData.email)
         .formParam("password", userData.password)
         .formParam("phone", userData.phone)
         .formParam("userStatus",userData.userStatus)

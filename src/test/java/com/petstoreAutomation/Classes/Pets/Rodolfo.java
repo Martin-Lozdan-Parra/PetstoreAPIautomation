@@ -14,6 +14,8 @@ public class Rodolfo extends PetData
         category = "{\"id\": 1,\n\"name\": \"Dogs\"}";
         String[] photos = {"RodolfoPhoto"};
         photoUrls = photos;
+        categoryID = 1;
+        categoryName = "Dogs";
 
     }
 

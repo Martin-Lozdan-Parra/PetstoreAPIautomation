@@ -27,9 +27,9 @@ public class StoreRunnerTest {
         storeCategory = StoreCategory.getInstance();
     }
     
-    //TODO some test are currently failing because of 500 status on POST and PUT methods for user. Consult a developer
+
     
-   //@Test(dataProvider = "newOrder", dataProviderClass = TestDataProviders.class)
+   @Test(dataProvider = "newOrder", dataProviderClass = TestDataProviders.class)
    public void createOrder(OrderData orderData)
    {    
         storeCategory = StoreCategory.getInstance();
@@ -38,7 +38,7 @@ public class StoreRunnerTest {
         .then()
         .statusCode(200);
 
-        response = storeCategory.getOrderByID(orderData.ID);
+        response = storeCategory.getOrderByID(orderData.ID.toString());
         response.then()
                 .statusCode(200)
                 .body("petId",equalTo(orderData.petID))
@@ -49,14 +49,27 @@ public class StoreRunnerTest {
         
    }
 
-   //@Test(dataProvider = "deleteOrder", dataProviderClass = TestDataProviders.class)
+   @Test(dataProvider = "newInvalidOrder", dataProviderClass = TestDataProviders.class)
+   public void createInvalidOrder(OrderData orderData)
+   {    
+        storeCategory = StoreCategory.getInstance();
+        Response response = storeCategory.placeOrder(orderData);
+        response
+        .then()
+        .statusCode(500);
+
+       
+        
+   }
+
+   @Test(dataProvider = "deleteOrder", dataProviderClass = TestDataProviders.class, dependsOnMethods = "createOrder")
    public void deleteOrder(OrderData orderData)
    {    
         storeCategory = StoreCategory.getInstance();
-        Response response = storeCategory.deleteOrder(orderData.ID);
+        Response response = storeCategory.deleteOrder(orderData.ID.toString());
         response.then()
                 .statusCode(200);
-        response = storeCategory.getOrderByID(orderData.ID);
+        response = storeCategory.getOrderByID(orderData.ID.toString());
         response.then()
                 .statusCode(404);
         
